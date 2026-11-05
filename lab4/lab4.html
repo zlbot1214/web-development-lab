@@ -23,21 +23,18 @@
       grid-template-areas:
         "header  header"
         "nav     nav"
-        "main    sidebar"
-        "footer  footer";
+        "main    sidebar";
       gap: 20px;
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
-      min-height: 100vh;
-      grid-template-rows: auto auto 1fr auto;
+      align-items: start;
     }
 
     .site-header { grid-area: header; }
     .site-nav    { grid-area: nav; }
     .content     { grid-area: main; }
     .sidebar     { grid-area: sidebar; }
-    .site-footer { grid-area: footer; }
 
     /* ===== Header: Flexbox ===== */
     .site-header {
@@ -270,22 +267,6 @@
     .stats dt { font-size: 12px; color: #666; }
     .stats dd { margin: 0; font-size: 20px; font-weight: 700; color: #245a81; }
 
-    /* ===== Footer: Flexbox ===== */
-    .site-footer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 15px 25px;
-      border-radius: 8px;
-      background-color: #1d3f5a;
-      color: white;
-      font-size: 13px;
-    }
-    .footer-links { display: flex; gap: 15px; }
-    .footer-links a { color: #cfe2f1; }
-
     /* ===== Responsive ===== */
     @media (max-width: 900px) {
       .page {
@@ -294,8 +275,7 @@
           "header"
           "nav"
           "main"
-          "sidebar"
-          "footer";
+          "sidebar";
       }
       .card-grid { grid-template-columns: repeat(2, 1fr); }
     }
@@ -548,15 +528,6 @@
         </dl>
       </section>
     </aside>
-
-    <footer class="site-footer">
-      <nav class="footer-links" aria-label="Доод цэс">
-        <a href="../index.html">Бүх лаб</a>
-        <a href="../lab1/index.html">Лаб 1</a>
-        <a href="../lab2/lab2.html">Лаб 2</a>
-        <a href="../lab3/lab3.html">Лаб 3</a>
-      </nav>
-    </footer>
 
   </div>
 

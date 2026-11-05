@@ -3,10 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=lab3/lab3.html">
-  <title>Лаборатори 03</title>
+  <title>Веб зохиомж: Лабораторийн ажлууд</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "Noto Sans", Arial, sans-serif;
+      background-color: #f0f4f8;
+      color: #333;
+      margin: 0;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      padding: 25px;
+      border-radius: 8px;
+      background-color: #245a81;
+      color: white;
+    }
+    header h1 { margin: 0; font-size: 26px; }
+    header p  { margin: 6px 0 0; opacity: 0.85; }
+
+    .lab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      margin: 20px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .lab-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 100%;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-top: 4px solid #245a81;
+      border-radius: 8px;
+      background-color: white;
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .lab-card:hover,
+    .lab-card:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(36, 90, 129, 0.18);
+    }
+
+    .lab-number { font-size: 13px; font-weight: 700; color: #245a81; }
+    .lab-card h2 { margin: 0; font-size: 18px; }
+    .lab-card p  { margin: 0; flex-grow: 1; font-size: 14px; line-height: 1.5; color: #555; }
+    .open { font-size: 14px; font-weight: 700; color: #245a81; }
+  </style>
 </head>
+
 <body>
-  <p><a href="lab3/lab3.html">Лаборатори 03 хуудсыг нээх</a></p>
+  <div class="page">
+    <header>
+      <h1>Веб зохиомж: Лабораторийн ажлууд</h1>
+      <p>Лабораторийн ажил дээр дарж бэлэн болсон вэб хуудсыг үзнэ үү.</p>
+    </header>
+
+    <main>
+      <ul class="lab-grid">
+        <li>
+          <a class="lab-card" href="lab1/index.html">
+            <span class="lab-number">Лаб 1</span>
+            <h2>Миний товч CV</h2>
+            <p>HTML-ийн үндсэн тагууд ашигласан хувийн танилцуулга хуудас.</p>
+            <span class="open">Нээх →</span>
+          </a>
+        </li>
+        <li>
+          <a class="lab-card" href="lab2/lab2.html">
+            <span class="lab-number">Лаб 2</span>
+            <h2>Хэрэглэгчийн анкет</h2>
+            <p>HTML форм, хүснэгт ашигласан оюутны бүртгэлийн анкет.</p>
+            <span class="open">Нээх →</span>
+          </a>
+        </li>
+        <li>
+          <a class="lab-card" href="lab3/lab3.html">
+            <span class="lab-number">Лаб 3</span>
+            <h2>CSS загварчлал</h2>
+            <p>Box model, сонгогч, байрлал ашиглан анкетийг загварчилсан.</p>
+            <span class="open">Нээх →</span>
+          </a>
+        </li>
+        <li>
+          <a class="lab-card" href="lab4/lab4.html">
+            <span class="lab-number">Лаб 4</span>
+            <h2>Flexbox ба Grid layout</h2>
+            <p>Header, nav, картын grid, sidebar, footer бүхий бүтэн хуудас.</p>
+            <span class="open">Нээх →</span>
+          </a>
+        </li>
+      </ul>
+    </main>
+  </div>
 </body>
 </html>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лаборатори 04: Flexbox ба Grid layout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    /* Ерөнхий тохиргоо */
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "Noto Sans", Arial, sans-serif;
+      background-color: #f0f4f8;
+      color: #333;
+      margin: 0;
+    }
+
+    /* ===== Хуудасны үндсэн бүтэц: CSS Grid ===== */
+    .page {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      grid-template-areas:
+        "header  header"
+        "nav     nav"
+        "main    sidebar"
+        "footer  footer";
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+      grid-template-rows: auto auto 1fr auto;
+    }
+
+    .site-header { grid-area: header; }
+    .site-nav    { grid-area: nav; }
+    .content     { grid-area: main; }
+    .sidebar     { grid-area: sidebar; }
+    .site-footer { grid-area: footer; }
+
+    /* ===== Header: Flexbox ===== */
+    .site-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      padding: 20px 25px;
+      border-radius: 8px;
+      background-color: #245a81;
+      color: white;
+    }
+    .site-header h1 { margin: 0; font-size: 24px; }
+    .site-header p  { margin: 5px 0 0; font-size: 14px; opacity: 0.85; }
+
+    .badge {
+      padding: 4px 10px;
+      border: 1px solid #8aae8c;
+      border-radius: 4px;
+      background-color: #d9edda;
+      color: #2f5531;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* ===== Navigation bar: Flexbox ===== */
+    .site-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: white;
+    }
+    .nav-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .nav-list a {
+      display: block;
+      padding: 8px 14px;
+      border-radius: 4px;
+      color: #245a81;
+      text-decoration: none;
+    }
+    .nav-list a:hover,
+    .nav-list a[aria-current="page"] {
+      background-color: #245a81;
+      color: white;
+    }
+    .search {
+      display: flex;
+      gap: 5px;
+    }
+
+    /* ===== Үндсэн агуулга ===== */
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .panel {
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: white;
+    }
+
+    .section-title {
+      margin: 0 0 15px;
+      color: #245a81;
+      font-size: 20px;
+    }
+
+    /* Картын grid: 3 багана */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 18px;
+      border: 1px solid #ddd;
+      border-top: 4px solid #245a81;
+      border-radius: 6px;
+      background-color: #fafcfe;
+    }
+    .card h3 { margin: 0; font-size: 17px; }
+    .card p  { margin: 0; flex-grow: 1; font-size: 14px; line-height: 1.5; }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #666;
+    }
+    .tag {
+      padding: 2px 8px;
+      border-radius: 10px;
+      background-color: #e3edf5;
+      color: #245a81;
+      font-size: 12px;
+    }
+
+    /* Дүнгийн хүснэгт */
+    .grades { width: 100%; border-collapse: collapse; }
+    .grades th, .grades td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    .grades td:nth-child(n+2) { width: 100px; }
+
+    /* Голчийн хэсэг: Flexbox */
+    .gpa-box {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 6px;
+      background-color: #e3edf5;
+    }
+    .gpa-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .gpa-item span { font-size: 13px; color: #555; }
+    .gpa-item output { font-size: 26px; font-weight: 700; color: #245a81; }
+
+    /* ===== Форм: Grid ашиглан 2 багана ===== */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px 20px;
+      align-items: end;
+    }
+    .form-field { display: flex; flex-direction: column; gap: 5px; }
+    .form-field.full { grid-column: 1 / -1; }
+
+    .field {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      font: inherit;
+    }
+
+    .choice-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      grid-column: 1 / -1;
+    }
+
+    .button {
+      padding: 10px 15px;
+      border: 1px solid #999;
+      border-radius: 4px;
+      font: inherit;
+      cursor: pointer;
+    }
+    .submit-button { background-color: #245a81; color: white; }
+    .reset-button  { background-color: #eee; color: #333; }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .sidebar h2 { margin: 0 0 10px; color: #245a81; font-size: 17px; }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #245a81;
+      color: white;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .profile p { margin: 0; font-size: 14px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 0;
+    }
+    .stats div {
+      padding: 10px;
+      border-radius: 6px;
+      background-color: #f0f4f8;
+      text-align: center;
+    }
+    .stats dt { font-size: 12px; color: #666; }
+    .stats dd { margin: 0; font-size: 20px; font-weight: 700; color: #245a81; }
+
+    /* ===== Footer: Flexbox ===== */
+    .site-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 15px 25px;
+      border-radius: 8px;
+      background-color: #1d3f5a;
+      color: white;
+      font-size: 13px;
+    }
+    .footer-links { display: flex; gap: 15px; }
+    .footer-links a { color: #cfe2f1; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 900px) {
+      .page {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header"
+          "nav"
+          "main"
+          "sidebar"
+          "footer";
+      }
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .page { padding: 12px; gap: 15px; }
+      .site-header { flex-direction: column; align-items: flex-start; }
+      .card-grid,
+      .form-grid { grid-template-columns: 1fr; }
+      .search { width: 100%; }
+      .search .field { flex-grow: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <header class="site-header">
+      <div>
+        <h1>Оюутны бүртгэлийн портал</h1>
+        <p>Веб зохиомж хичээл — Лаборатори 04</p>
+      </div>
+      <span class="badge">Бүртгэл нээлттэй</span>
+    </header>
+
+    <nav class="site-nav" aria-label="Үндсэн цэс">
+      <ul class="nav-list">
+        <li><a href="#interests" aria-current="page">Нүүр</a></li>
+        <li><a href="#courses">Хичээлүүд</a></li>
+        <li><a href="#grades">Дүн</a></li>
+        <li><a href="#application">Анкет</a></li>
+      </ul>
+      <form class="search" role="search" action="#">
+        <input class="field" type="search" name="q" placeholder="Хайх..." aria-label="Хайх">
+        <button class="button submit-button" type="submit">Хайх</button>
+      </form>
+    </nav>
+
+    <main class="content">
+
+      <section class="panel" id="interests">
+        <h2 class="section-title">Миний сонирхол</h2>
+        <div class="card-grid">
+          <article class="card">
+            <h3>Веб хөгжүүлэлт</h3>
+            <p>HTML, CSS, JavaScript ашиглан хэрэглэгчдэд ээлтэй вэб хуудас бүтээх.</p>
+            <div class="card-footer"><span class="tag">Код</span><span>Өдөр бүр</span></div>
+          </article>
+          <article class="card">
+            <h3>Фото зураг авах</h3>
+            <p>Байгаль, хотын үзэмжийг гэрэл зургаар мөнхөлж, засварлах.</p>
+            <div class="card-footer"><span class="tag">Урлаг</span><span>Амралтаар</span></div>
+          </article>
+          <article class="card">
+            <h3>Кино үзэх</h3>
+            <p>Шинжлэх ухааны уран зөгнөлт болон баримтат кино сонирхон үзэх.</p>
+            <div class="card-footer"><span class="tag">Чөлөөт цаг</span><span>Долоо хоногт</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" id="courses">
+        <h2 class="section-title">Энэ улирлын хичээлүүд</h2>
+        <div class="card-grid">
+          <article class="card">
+            <h3>Нууцлалын протоколууд</h3>
+            <p>Шифрлэлт, баталгаажуулалт болон аюулгүй холболтын протоколууд.</p>
+            <div class="card-footer"><span class="tag">Аюулгүй байдал</span></div>
+          </article>
+          <article class="card">
+            <h3>Веб системийн аюулгүй байдал</h3>
+            <p>Вэб програмын түгээмэл эмзэг байдал, тэдгээрээс хамгаалах арга.</p>
+            <div class="card-footer"><span class="tag">Аюулгүй байдал</span></div>
+          </article>
+          <article class="card">
+            <h3>Сүлжээний программчлал</h3>
+            <p>Socket, клиент-сервер програм болон сүлжээгээр өгөгдөл дамжуулах.</p>
+            <div class="card-footer"><span class="tag">Сүлжээ</span></div>
+          </article>
+          <article class="card">
+            <h3>Сүлжээний загварчлал, симуляци</h3>
+            <p>Сүлжээний бүтэц, ачааллыг загварчлан симуляци хийх.</p>
+            <div class="card-footer"><span class="tag">Сүлжээ</span></div>
+          </article>
+          <article class="card">
+            <h3>Ёс зүйт халдлага</h3>
+            <p>Зөвшөөрөлтэй нэвтрэлтийн тест хийж системийн сул талыг илрүүлэх.</p>
+            <div class="card-footer"><span class="tag">Аюулгүй байдал</span></div>
+          </article>
+          <article class="card">
+            <h3>Утасгүй сүлжээ, аюулгүй байдал</h3>
+            <p>Wi-Fi болон утасгүй холболтын стандарт, хамгаалалт.</p>
+            <div class="card-footer"><span class="tag">Сүлжээ</span></div>
+          </article>
+          <article class="card">
+            <h3>Веб зохиомж</h3>
+            <p>Flexbox, Grid, responsive дизайны үндсэн ойлголтууд.</p>
+            <div class="card-footer"><span class="tag">Веб</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" id="grades">
+        <h2 class="section-title">Миний дүн</h2>
+        <table class="grades" id="grades-table">
+          <thead>
+            <tr>
+              <th>Хичээл</th>
+              <th>Кредит</th>
+              <th>Дүн</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Нууцлалын протоколууд</td>
+              <td><input class="field credit" type="number" id="crypto-credit" name="crypto_credit" min="1" max="6" step="1" required form="application-form" aria-label="Нууцлалын протоколуудын кредит"></td>
+              <td><input class="field score" type="number" id="crypto-grade" name="crypto_grade" min="0" max="100" step="1" required form="application-form" aria-label="Нууцлалын протоколуудын дүн"></td>
+            </tr>
+            <tr>
+              <td>Веб системийн аюулгүй байдал</td>
+              <td><input class="field credit" type="number" id="websec-credit" name="websec_credit" min="1" max="6" step="1" required form="application-form" aria-label="Веб системийн аюулгүй байдлын кредит"></td>
+              <td><input class="field score" type="number" id="websec-grade" name="websec_grade" min="0" max="100" step="1" required form="application-form" aria-label="Веб системийн аюулгүй байдлын дүн"></td>
+            </tr>
+            <tr>
+              <td>Сүлжээний программчлал</td>
+              <td><input class="field credit" type="number" id="netprog-credit" name="netprog_credit" min="1" max="6" step="1" required form="application-form" aria-label="Сүлжээний программчлалын кредит"></td>
+              <td><input class="field score" type="number" id="netprog-grade" name="netprog_grade" min="0" max="100" step="1" required form="application-form" aria-label="Сүлжээний программчлалын дүн"></td>
+            </tr>
+            <tr>
+              <td>Сүлжээний загварчлал, симуляци</td>
+              <td><input class="field credit" type="number" id="netsim-credit" name="netsim_credit" min="1" max="6" step="1" required form="application-form" aria-label="Сүлжээний загварчлал, симуляцийн кредит"></td>
+              <td><input class="field score" type="number" id="netsim-grade" name="netsim_grade" min="0" max="100" step="1" required form="application-form" aria-label="Сүлжээний загварчлал, симуляцийн дүн"></td>
+            </tr>
+            <tr>
+              <td>Ёс зүйт халдлага</td>
+              <td><input class="field credit" type="number" id="ethical-hacking-credit" name="ethical_hacking_credit" min="1" max="6" step="1" required form="application-form" aria-label="Ёс зүйт халдлагын кредит"></td>
+              <td><input class="field score" type="number" id="ethical-hacking-grade" name="ethical_hacking_grade" min="0" max="100" step="1" required form="application-form" aria-label="Ёс зүйт халдлагын дүн"></td>
+            </tr>
+            <tr>
+              <td>Утасгүй сүлжээ, аюулгүй байдал</td>
+              <td><input class="field credit" type="number" id="wireless-credit" name="wireless_credit" min="1" max="6" step="1" required form="application-form" aria-label="Утасгүй сүлжээ, аюулгүй байдлын кредит"></td>
+              <td><input class="field score" type="number" id="wireless-grade" name="wireless_grade" min="0" max="100" step="1" required form="application-form" aria-label="Утасгүй сүлжээ, аюулгүй байдлын дүн"></td>
+            </tr>
+            <tr>
+              <td>Веб зохиомж</td>
+              <td><input class="field credit" type="number" id="web-credit" name="web_credit" min="1" max="6" step="1" required form="application-form" aria-label="Веб зохиомжийн кредит"></td>
+              <td><input class="field score" type="number" id="web-grade" name="web_grade" min="0" max="100" step="1" required form="application-form" aria-label="Веб зохиомжийн дүн"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Голч: дүн, кредит оруулах үед шууд тооцоологдоно -->
+        <div class="gpa-box" aria-live="polite">
+          <div class="gpa-item">
+            <span>Голч (GPA)</span>
+            <output id="gpa">—</output>
+          </div>
+          <div class="gpa-item">
+            <span>Нийт кредит</span>
+            <output id="total-credit">0</output>
+          </div>
+          <div class="gpa-item">
+            <span>Дундаж оноо</span>
+            <output id="avg-score">—</output>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="application">
+        <h2 class="section-title">Хэрэглэгчийн анкет бөглөх</h2>
+        <form id="application-form" class="form-grid" action="#" method="POST" enctype="multipart/form-data">
+          <div class="form-field">
+            <label for="fullname">Овог нэр:</label>
+            <input class="field" type="text" id="fullname" name="fullname" placeholder="И. Болдбаатар" required minlength="2">
+          </div>
+          <div class="form-field">
+            <label for="email">Цахим хаяг (Email):</label>
+            <input class="field" type="email" id="email" name="email" placeholder="example@domain.com" required>
+          </div>
+          <div class="form-field">
+            <label for="password">Нууц үг:</label>
+            <input class="field" type="password" id="password" name="password" required minlength="6">
+          </div>
+          <div class="form-field">
+            <label for="phone">Утасны дугаар:</label>
+            <input class="field" type="tel" id="phone" name="phone" pattern="[0-9]{8}" placeholder="88112233" required>
+          </div>
+          <div class="form-field">
+            <label for="dob">Төрсөн огноо:</label>
+            <input class="field" type="date" id="dob" name="dob" required>
+          </div>
+          <div class="form-field">
+            <label for="degree">Суралцаж буй түвшин:</label>
+            <select class="field" id="degree" name="degree" required>
+              <option value="">-- Сонгоно уу --</option>
+              <option value="bachelor">Бакалавр</option>
+              <option value="master">Магистр</option>
+              <option value="doctor">Докторант</option>
+            </select>
+          </div>
+          <fieldset class="form-field full">
+            <legend>Хүйс:</legend>
+            <div class="choice-group">
+              <label><input type="radio" name="gender" value="male"> Эрэгтэй</label>
+              <label><input type="radio" name="gender" value="female"> Эмэгтэй</label>
+            </div>
+          </fieldset>
+          <fieldset class="form-field full">
+            <legend>Сонирхож буй технологиуд:</legend>
+            <div class="choice-group">
+              <label><input type="checkbox" name="skills" value="HTML"> HTML5 / CSS3</label>
+              <label><input type="checkbox" name="skills" value="JavaScript"> JavaScript</label>
+              <label><input type="checkbox" name="skills" value="PHP"> PHP &amp; MySQL</label>
+            </div>
+          </fieldset>
+          <div class="form-field full">
+            <label for="avatar">Профайл зураг оруулна уу:</label>
+            <input class="field" type="file" id="avatar" name="avatar" accept="image/*">
+          </div>
+          <div class="form-field full">
+            <label for="bio">Товч танилцуулга / Өөрийн тухай:</label>
+            <textarea class="field" id="bio" name="bio" rows="4" placeholder="Өөрийн танилцуулгыг энд бичнэ үү..."></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="button reset-button" type="reset">Дахин эхлүүлэх</button>
+            <button class="button submit-button" type="submit">Анкет илгээх</button>
+          </div>
+        </form>
+      </section>
+
+    </main>
+
+    <aside class="sidebar">
+      <section class="panel">
+        <h2>Оюутны мэдээлэл</h2>
+        <div class="profile">
+          <div class="avatar" aria-hidden="true">ЗБ</div>
+          <p><strong>Золбоот Б.</strong><br>Мэдээллийн технологи</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Статистик</h2>
+        <dl class="stats">
+          <div><dt>Кредит</dt><dd>16</dd></div>
+          <div><dt>Хичээл</dt><dd>7</dd></div>
+          <div><dt>Курс</dt><dd>2</dd></div>
+          <div><dt>Лаб</dt><dd>4</dd></div>
+        </dl>
+      </section>
+    </aside>
+
+    <footer class="site-footer">
+      <nav class="footer-links" aria-label="Доод цэс">
+        <a href="../index.html">Бүх лаб</a>
+        <a href="../lab1/index.html">Лаб 1</a>
+        <a href="../lab2/lab2.html">Лаб 2</a>
+        <a href="../lab3/lab3.html">Лаб 3</a>
+      </nav>
+    </footer>
+
+  </div>
+
+  <script>
+    // 100 онооны дүнг 4.0 голчийн оноо руу хөрвүүлэх
+    function gradePoint(score) {
+      if (score >= 96) return 4.0;
+      if (score >= 91) return 3.7;
+      if (score >= 88) return 3.3;
+      if (score >= 84) return 3.0;
+      if (score >= 81) return 2.7;
+      if (score >= 78) return 2.3;
+      if (score >= 74) return 2.0;
+      if (score >= 71) return 1.7;
+      if (score >= 68) return 1.3;
+      if (score >= 64) return 1.0;
+      if (score >= 61) return 0.7;
+      return 0.0;
+    }
+
+    // Кредит ба дүн хоёулаа бөглөгдсөн мөрүүдээр голч тооцох
+    function calculateGpa() {
+      var rows = document.querySelectorAll('#grades-table tbody tr');
+      var totalCredit = 0;
+      var totalPoints = 0;
+      var totalScore = 0;
+
+      rows.forEach(function (row) {
+        var credit = parseFloat(row.querySelector('.credit').value);
+        var score = parseFloat(row.querySelector('.score').value);
+        if (credit > 0 && score >= 0 && score <= 100) {
+          totalCredit += credit;
+          totalPoints += gradePoint(score) * credit;
+          totalScore += score * credit;
+        }
+      });
+
+      document.getElementById('total-credit').textContent = totalCredit;
+      document.getElementById('gpa').textContent =
+        totalCredit > 0 ? (totalPoints / totalCredit).toFixed(2) : '—';
+      document.getElementById('avg-score').textContent =
+        totalCredit > 0 ? (totalScore / totalCredit).toFixed(1) : '—';
+    }
+
+    document.getElementById('grades-table').addEventListener('input', calculateGpa);
+    document.getElementById('application-form').addEventListener('reset', function () {
+      setTimeout(calculateGpa, 0);
+    });
+
+    document.getElementById('application-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      alert('Баярлалаа!');
+    });
+  </script>
+</body>
+</html>
